@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explore Houseboats | KeralaBoats</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/houseboats.css') }}?v=11">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+</head>
+
+<body>
+
+{% set user = request.session.get('user') %}
+
+{% include "navbar.html" %}
+
+<main>
+
+    <section class="houseboat-hero">
+        <div class="hero-content">
+            <span class="hero-eyebrow">DISCOVER THE BEAUTY OF KERALA</span>
+
+            <h1>
+                Find Your Perfect <span>Houseboat</span>
+            </h1>
+
+            <p>
+                Explore peaceful backwaters, beautiful views
+                and unforgettable experiences.
+            </p>
+        </div>
+    </section>
+
+    <section class="houseboat-section">
+
+        <div class="houseboat-heading">
+
+            <div class="heading-content">
+                <span class="section-label">OUR COLLECTION</span>
+
+                <h2>Explore Our Houseboats</h2>
+
+                <p>
+                    Choose the perfect stay for your Kerala
+                    backwater journey.
+                </p>
+            </div>
+
+            <div class="heading-actions">
+
+                {% if user %}
+                    {% if user.role == 'admin' %}
+                    <a href="/admin/dashboard" class="dashboard-btn">
+                        &#8592; Back to Dashboard
+                    </a>
+                    {% else %}
+                    <a href="/user/dashboard" class="dashboard-btn">
+                        &#8592; Back to Dashboard
+                    </a>
+                    {% endif %}
+                {% endif %}
+
+                <span class="boat-count">
+                    {{ houseboats|length }} Houseboats
+                </span>
+
+            </div>
+
+        </div>
+
+        <form method="GET" action="/houseboats" class="filter-bar">
+
+            <div class="filter-label">
+                <div class="filter-icon">&#9906;</div>
+
+                <div class="filter-field">
+                    <label for="location">Choose Location</label>
+
+                    <select name="location" id="location">
+                        <option value="">All Locations</option>
+
+                        {% for location in locations %}
+                        <option value="{{ location }}"
+                            {% if search == location %}selected{% endif %}>
+                            {{ location }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="search-btn">
+                Search Houseboats
+                <span>&#8594;</span>
+            </button>
+
+        </form>
+
+        {% if houseboats %}
+
+        <div class="houseboat-grid">
+
+            {% for houseboat in houseboats %}
+
+            <article class="houseboat-card" id="houseboat-{{ loop.index }}">
+
+                <div class="image-wrapper">
+
+                    {% if houseboat.images and houseboat.images|length > 0 %}
+
+                    <img
+                        src="{{ url_for('static', path='uploads/' ~ houseboat.images[0].image_path) }}"
+                        alt="{{ houseboat.name }}"
+                        loading="lazy"
+                    >
+
+                    {% else %}
+
+                    <img
+                        src="https://placehold.co/700x450?text=Houseboat"
+                        alt="Houseboat"
+                        loading="lazy"
+                    >
+
+                    {% endif %}
+
+                    <span class="image-tag">
+                        KERALA BACKWATERS
+                    </span>
+
+                    {% if houseboat.is_active %}
+                    <span class="availability-badge">
+                        <span class="availability-dot"></span>
+                        Available
+                    </span>
+                    {% endif %}
+
+                </div>
+
+                <div class="card-content">
+
+                    <p class="card-location">
+                        <span>&#9906;</span>
+                        {{ houseboat.location }}
+                    </p>
+
+                    <h3>{{ houseboat.name }}</h3>
+
+                    {% if houseboat.description %}
+                    <p class="description">
+                        {{ houseboat.description }}
+                    </p>
+                    {% else %}
+                    <p class="description">
+                        Enjoy a relaxing stay and discover the
+                        beauty of Kerala's backwaters.
+                    </p>
+                    {% endif %}
+
+                    <div class="boat-details">
+
+                        <div class="detail-item">
+                            <span class="detail-icon">&#9638;</span>
+                            <span>{{ houseboat.bedrooms }} Bedrooms</span>
+                        </div>
+
+                        <div class="detail-item">
+                            <span class="detail-icon">&#9823;</span>
+                            <span>{{ houseboat.capacity }} Guests</span>
+                        </div>
+
+                    </div>
+
+                    <div class="card-bottom">
+
+                        <div class="price">
+                            <strong>₹{{ "{:,.0f}".format(houseboat.price_per_night|float) }}</strong>
+                            <span>per night</span>
+                        </div>
+
+                        <a href="/houseboats/{{ houseboat.id }}" class="view-btn">
+                            View Details
+                            <span>&#8594;</span>
+                        </a>
+
+                    </div>
+
+                    <div class="card-navigation">
+
+                        {% if loop.index > 1 %}
+                        <a href="#houseboat-{{ loop.index - 1 }}" class="card-nav-btn">
+                            &#8592; Previous
+                        </a>
+                        {% else %}
+                        <a href="#houseboat-{{ loop.length }}" class="card-nav-btn">
+                            &#8592; Previous
+                        </a>
+                        {% endif %}
+
+                        {% if loop.index < loop.length %}
+                        <a href="#houseboat-{{ loop.index + 1 }}" class="card-nav-btn">
+                            Next &#8594;
+                        </a>
+                        {% else %}
+                        <a href="#houseboat-1" class="card-nav-btn">
+                            Back to First &#8594;
+                        </a>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">&#8962;</div>
+
+            <h3>No Houseboats Found</h3>
+
+            <p>
+                There are currently no houseboats available
+                in this location.
+            </p>
+
+            <a href="/houseboats" class="reset-btn">
+                View All Houseboats
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+</body>
+</html>

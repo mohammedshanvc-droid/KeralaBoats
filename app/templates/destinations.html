@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explore Destinations | KeralaBoats</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/destinations.css') }}?v=6">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+{% set user = request.session.get('user') %}
+
+{% include "navbar.html" %}
+
+<section class="page-hero">
+    <div class="hero-content">
+        <span>DISCOVER GOD'S OWN COUNTRY</span>
+        <h1>Explore Kerala Destinations</h1>
+        <p>
+            Discover beautiful places, peaceful backwaters
+            and unforgettable experiences.
+        </p>
+    </div>
+</section>
+
+<section class="destination-section">
+
+    <div class="section-heading">
+
+        <div class="heading-content">
+            <span class="eyebrow">EXPLORE KERALA</span>
+            <h2>Our Destinations</h2>
+            <p>
+                Explore the destinations carefully added to our collection.
+            </p>
+        </div>
+
+        <div class="heading-actions">
+
+            {% if user and user.role == 'admin' %}
+
+                <a href="/admin/destinations" class="add-destination-btn">
+                    + Add Destination
+                </a>
+
+                <a href="/admin/dashboard" class="dashboard-btn">
+                    ← Back to Dashboard
+                </a>
+
+            {% elif user %}
+
+                <a href="/user/dashboard" class="dashboard-btn">
+                    ← Back to Dashboard
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% if destinations %}
+
+    <div class="destination-slider">
+
+        <div class="destination-grid">
+
+            {% for destination in destinations %}
+
+            <article class="destination-card" id="destination-{{ loop.index0 }}">
+
+                <div class="destination-image"
+                     data-number="{{ '%02d'|format(loop.index) }}">
+
+                    {% if destination.images and destination.images|length > 0 %}
+
+                        <img
+                            src="{{ url_for('static', path='uploads/' ~ destination.images[0].image_path) }}"
+                            alt="{{ destination.name }}"
+                        >
+
+                    {% else %}
+
+                        <div class="no-image">
+                            Destination Image
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="destination-info">
+
+                    <span class="destination-label">
+                        EXPLORE KERALA
+                    </span>
+
+                    <h3>{{ destination.name }}</h3>
+
+                    <p class="location">
+                        {{ destination.location }}
+                    </p>
+
+                    <p class="description">
+                        {{ destination.description or "Explore the beauty of Kerala." }}
+                    </p>
+
+                    {% if not user or user.role != 'admin' %}
+
+                        <a
+                            href="/houseboats?location={{ destination.location | urlencode }}"
+                            class="destination-btn"
+                        >
+                            Explore Houseboats
+                            <span>⟶</span>
+                        </a>
+
+                    {% endif %}
+
+                    <div class="card-navigation">
+
+                        {% if not loop.first %}
+
+                            <a href="#destination-{{ loop.index0 - 1 }}" class="card-nav-btn">
+                                &#8592; Previous
+                            </a>
+
+                        {% else %}
+
+                            <span></span>
+
+                        {% endif %}
+
+                        {% if not loop.last %}
+
+                            <a href="#destination-{{ loop.index0 + 1 }}" class="card-nav-btn">
+                                Next &#8594;
+                            </a>
+
+                        {% else %}
+
+                            <a href="#destination-0" class="card-nav-btn">
+                                Back to First &#8594;
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+        
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-message">
+        <h3>No Destinations Available</h3>
+        <p>
+            Our destinations will appear here once added by the admin.
+        </p>
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% include "footer.html" %}
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Houseboat | Kerala Boats</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/add_houseboat.css') }}">
+</head>
+<body>
+
+    {% include "navbar.html" %}
+
+    <main class="page-container">
+          <a href="/admin/dashboard" class="back-link">
+            ← Back to Dashboard
+
+          </a>
+
+        <div class="page-heading">
+            <span class="eyebrow">ADMINISTRATION</span>
+            <h1>Add New <span>Houseboat</span></h1>
+            <p>Add houseboat details, facilities, pricing, food options and photos to your website.</p>
+        </div>
+
+        <div class="form-card">
+
+            <div class="form-header">
+                <h2>Houseboat Information</h2>
+                <p>Fill in the details below to create a new listing.</p>
+            </div>
+
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            <form action="/admin/add-houseboat" method="POST" enctype="multipart/form-data">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="name">Houseboat Name</label>
+                        <input type="text" id="name" name="name"
+                               placeholder="Enter houseboat name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location"
+                               placeholder="Example: Alleppey" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bedrooms">Number of Bedrooms</label>
+                        <input type="number" id="bedrooms" name="bedrooms"
+                               min="1" placeholder="Example: 3" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="capacity">Guest Capacity</label>
+                        <input type="number" id="capacity" name="capacity"
+                               min="1" placeholder="Example: 6" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="price_per_night">Price Per Night (₹)</label>
+                        <input type="number" id="price_per_night"
+                               name="price_per_night" min="1" step="0.01"
+                               placeholder="Example: 12000" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="facilities">Facilities</label>
+                        <textarea id="facilities" name="facilities"
+                                  rows="3"
+                                  placeholder="Example: AC, WiFi, Dining Area, Kitchen"
+                                  required></textarea>
+                        <small>Separate each facility with a comma.</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description"
+                                  rows="5"
+                                  placeholder="Write about the houseboat and its experience..."
+                                  required></textarea>
+                    </div>
+
+                    <div class="form-group full-width section-heading">
+                        <h2>Food &amp; Dining</h2>
+                        <p>Provide information about food and dining facilities available on this houseboat.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="food_available">Food Availability</label>
+                        <select id="food_available" name="food_available" required>
+                            <option value="">Select availability</option>
+                            <option value="Available">Food Available</option>
+                            <option value="Not Available">Food Not Available</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="meal_options">Meal Options</label>
+                        <input type="text" id="meal_options"
+                               name="meal_options"
+                               placeholder="Breakfast, Lunch, Dinner">
+                        <small>Enter the meals provided.</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="food_menu">Food Menu</label>
+                        <textarea id="food_menu" name="food_menu"
+                                  rows="4"
+                                  placeholder="Example: Kerala meals, fish curry, chicken roast, appam, puttu..."></textarea>
+                        <small>Describe the food items available to guests.</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="special_food">Special Food Options</label>
+                        <input type="text" id="special_food"
+                               name="special_food"
+                               placeholder="Vegetarian, Non-Vegetarian, Seafood">
+                        <small>Mention special food choices available.</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="images">Houseboat Photos</label>
+
+                        <div class="upload-area">
+                            <input type="file" id="images" name="images"
+                                   accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                   multiple required>
+
+                            <p>Select multiple houseboat photos</p>
+                            <small>Supported formats: JPG, JPEG, PNG and WEBP</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <a href="/admin/dashboard" class="cancel-btn">Cancel</a>
+
+                    <button type="submit" class="submit-btn">
+                        Add Houseboat <span>→</span>
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    {% include "footer.html" %}
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | KeralaBoats</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin.css') }}?v=2">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/nav.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    <main>
+
+        <section class="hero">
+            <div class="hero-content">
+                <span class="hero-tag">KERALA BOATS · ADMIN PANEL</span>
+
+                <h1>
+                    Welcome Back,<br>
+                    <span>{{ user.name }}!</span>
+                </h1>
+
+                <p>Manage your houseboat listings and booking platform from one place.</p>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+                <span class="eyebrow">ADMINISTRATION</span>
+                <h2>Manage Your Website</h2>
+                <p>Choose an option below to manage your houseboat booking website.</p>
+            </div>
+
+            <div class="dashboard-cards">
+
+                <div class="dashboard-card">
+                    <div class="card-icon">01</div>
+                    <h3>Manage Houseboats</h3>
+                    <p>View available houseboats and manage their details, prices and facilities.</p>
+                    <a href="/admin/houseboats" class="card-btn">
+                        View Houseboats <span>→</span>
+                    </a>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">02</div>
+                    <h3>Add Houseboat</h3>
+                    <p>Add new houseboats with photos, location, pricing and facilities.</p>
+                    <a href="/admin/add-houseboat" class="card-btn">
+                        Add Houseboat <span>→</span>
+                    </a>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">03</div>
+                    <h3>Manage Destinations</h3>
+                    <p>Add new Kerala destinations with photos, descriptions and locations. View or delete existing destinations.</p>
+                    <a href="/admin/destinations" class="card-btn">
+                        Manage Destinations <span>→</span>
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    {% include "footer.html" %}
+
+</body>
+</html>

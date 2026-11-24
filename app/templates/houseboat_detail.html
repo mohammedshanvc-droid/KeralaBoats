@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ hb.name }} | KeralaBoats</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/houseboat_detail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+</head>
+
+<body>
+
+{% set user = request.session.get('user') %}
+{% include "navbar.html" %}
+
+<main class="detail-container">
+
+    <div class="breadcrumb">
+        <a href="/houseboats">Houseboats</a>
+        <span>/</span>
+        <span>{{ hb.name }}</span>
+    </div>
+
+    <section class="detail-heading">
+        <div>
+            <span class="section-label">KERALA BACKWATERS</span>
+            <h1>{{ hb.name }}</h1>
+            <p class="location">{{ hb.location }}</p>
+
+            <div class="houseboat-id">
+                <span class="id-label">ID</span>
+                <span class="id-number">#{{ hb.id }}</span>
+            </div>
+        </div>
+
+        <a href="/houseboats" class="back-btn">← Back to Houseboats</a>
+    </section>
+
+    <section class="gallery-wrapper">
+
+        {% if hb.images %}
+
+            <div class="gallery" id="houseboat-gallery">
+
+                {% for image in hb.images %}
+
+                    <div class="gallery-image" id="gallery-image-{{ loop.index }}">
+
+                        <img
+                            src="{{ url_for('static', path='uploads/' ~ image.image_path) }}"
+                            alt="{{ hb.name }} houseboat image {{ loop.index }}"
+                        >
+
+                        <div class="gallery-controls">
+
+                            <a
+                                href="#gallery-image-{% if loop.first %}{{ hb.images|length }}{% else %}{{ loop.index - 1 }}{% endif %}"
+                                class="gallery-arrow"
+                                aria-label="Previous image"
+                            >
+                                &#8592;
+                            </a>
+
+                            <span class="image-number">
+                                {{ loop.index }} / {{ hb.images|length }}
+                            </span>
+
+                            <a
+                                href="#gallery-image-{% if loop.last %}1{% else %}{{ loop.index + 1 }}{% endif %}"
+                                class="gallery-arrow"
+                                aria-label="Next image"
+                            >
+                                &#8594;
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="gallery-image no-gallery-image">
+                <img
+                    src="https://placehold.co/1200x700?text=Houseboat"
+                    alt="Houseboat"
+                >
+            </div>
+
+        {% endif %}
+
+    </section>
+
+    <section class="details-layout">
+
+        <div class="description-section">
+
+            <div class="content-section">
+                <span class="section-label">DISCOVER YOUR STAY</span>
+                <h2>About This Houseboat</h2>
+
+                <p class="description">
+                    {{ hb.description or "Enjoy a relaxing stay and discover the beautiful backwaters of Kerala." }}
+                </p>
+            </div>
+
+            <div class="features">
+
+                <div class="feature">
+                    <span class="feature-icon">▤</span>
+                    <div>
+                        <strong>{{ hb.bedrooms }}</strong>
+                        <span>Bedrooms</span>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">♙</span>
+                    <div>
+                        <strong>{{ hb.capacity }}</strong>
+                        <span>Maximum Guests</span>
+                    </div>
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">₹</span>
+                    <div>
+                        <strong>₹{{ hb.price_per_night }}</strong>
+                        <span>Per Night</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="content-section facilities-section">
+                <h2>Facilities & Amenities</h2>
+
+                {% if facilities %}
+                    <div class="facility-list">
+                        {% for facility in facilities %}
+                            <span class="facility-item">
+                                <span class="check-icon">✓</span>
+                                {{ facility }}
+                            </span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="empty-text">Facility information is not available.</p>
+                {% endif %}
+            </div>
+
+            <div class="content-section food-section">
+
+                <span class="section-label">A TASTE OF KERALA</span>
+                <h2>Food & Dining</h2>
+
+                <div class="food-info-grid">
+
+                    <div class="food-info-card">
+                        <span class="food-icon">01</span>
+                        <div>
+                            <span class="food-heading">Food Availability</span>
+                            <strong>{{ hb.food_available or "Not specified" }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="food-info-card">
+                        <span class="food-icon">02</span>
+                        <div>
+                            <span class="food-heading">Meal Options</span>
+                            <strong>{{ hb.meal_options or "Not specified" }}</strong>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="food-menu-card">
+                    <h3>Food Menu</h3>
+
+                    {% if hb.food_menu %}
+                        <p class="food-description">{{ hb.food_menu }}</p>
+                    {% else %}
+                        <p class="empty-text">No food menu added.</p>
+                    {% endif %}
+                </div>
+
+                <div class="food-menu-card special-food-card">
+                    <h3>Special Food</h3>
+
+                    {% if hb.special_food %}
+                        <p class="food-description">{{ hb.special_food }}</p>
+                    {% else %}
+                        <p class="empty-text">No special food options added.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="content-section reviews-section" id="reviews">
+
+                <span class="section-label">CUSTOMER EXPERIENCES</span>
+                <h2>Reviews & Ratings</h2>
+
+                {% if review_status == 'success' %}
+                    <div class="review-alert success-alert">
+                        Your review has been submitted successfully!
+                    </div>
+                {% elif review_status == 'updated' %}
+                    <div class="review-alert success-alert">
+                        Your review has been updated successfully!
+                    </div>
+                {% elif review_status == 'already_submitted' %}
+                    <div class="review-alert warning-alert">
+                        You have already submitted a review for this houseboat.
+                    </div>
+                {% elif review_status == 'invalid' %}
+                    <div class="review-alert warning-alert">
+                        Please select a valid rating between 1 and 5 stars. Your comment must be under 2000 characters.
+                    </div>
+                {% endif %}
+
+                {% if user and user.role == 'customer' %}
+
+                    {% set already_reviewed = namespace(value=false) %}
+
+                    {% for review in reviews %}
+                        {% if review.user_id == user.id %}
+                            {% set already_reviewed.value = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if not already_reviewed.value %}
+
+                        <div class="review-form-card">
+                            <h3>Share Your Experience</h3>
+                            <p>How was your houseboat experience? Share your feedback with others.</p>
+
+                            <form method="POST"
+                                  action="/houseboats/{{ hb.id }}/reviews"
+                                  class="review-form">
+
+                                <label class="review-label">Your Rating</label>
+
+                                <div class="rating-options">
+                                    {% for star in [5, 4, 3, 2, 1] %}
+                                        <input type="radio"
+                                               name="rating"
+                                               id="rating-{{ star }}"
+                                               value="{{ star }}"
+                                               required>
+                                        <label for="rating-{{ star }}">★</label>
+                                    {% endfor %}
+                                </div>
+
+                                <label for="review-comment" class="review-label">
+                                    Your Comment
+                                </label>
+
+                                <textarea id="review-comment"
+                                          name="comment"
+                                          rows="4"
+                                          maxlength="2000"
+                                          placeholder="Write about your experience..."></textarea>
+
+                                <button type="submit" class="submit-review-btn">
+                                    Submit Review
+                                </button>
+                            </form>
+                        </div>
+
+                    {% else %}
+
+                        <div class="review-alert info-alert">
+                            You have already submitted a review for this houseboat. You can edit your review below.
+                        </div>
+
+                    {% endif %}
+
+                {% elif user and user.role == 'admin' %}
+
+                    <p class="empty-text">
+                        Admin accounts can view customer reviews but cannot submit or edit reviews.
+                    </p>
+
+                {% else %}
+
+                    <p class="empty-text">
+                        Please <a href="/login">login</a> as a customer to submit a review.
+                    </p>
+
+                {% endif %}
+
+                <div class="customer-reviews">
+
+                    <h3>What Customers Say</h3>
+
+                    {% if reviews %}
+
+                        {% for review in reviews %}
+
+                            <div class="customer-review-card">
+
+                                <div class="review-top">
+                                    <div>
+                                        <strong class="reviewer-name">
+                                            {{ review.user.name }}
+                                        </strong>
+
+                                        <span class="review-date">
+                                            {{ review.created_at.strftime('%d %b %Y') if review.created_at else '' }}
+                                        </span>
+                                    </div>
+
+                                    <div class="review-stars">
+                                        {% for star in range(1, 6) %}
+                                            {% if star <= review.rating %}
+                                                <span class="filled-star">★</span>
+                                            {% else %}
+                                                <span class="empty-star">★</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                {% if review.comment %}
+                                    <p class="review-comment">{{ review.comment }}</p>
+                                {% else %}
+                                    <p class="review-comment empty-text">
+                                        No written comment provided.
+                                    </p>
+                                {% endif %}
+
+                                {% if user and user.role == 'customer' and review.user_id == user.id %}
+
+                                    <details class="edit-review-details">
+                                        <summary class="edit-review-btn">Edit Review</summary>
+
+                                        <form method="POST"
+                                              action="/houseboats/{{ hb.id }}/reviews/{{ review.id }}/edit"
+                                              class="review-form">
+
+                                            <label class="review-label">Update Your Rating</label>
+
+                                            <div class="rating-options">
+                                                {% for star in [5, 4, 3, 2, 1] %}
+                                                    <input type="radio"
+                                                           name="rating"
+                                                           id="edit-rating-{{ review.id }}-{{ star }}"
+                                                           value="{{ star }}"
+                                                           {% if review.rating == star %}checked{% endif %}
+                                                           required>
+                                                    <label for="edit-rating-{{ review.id }}-{{ star }}">★</label>
+                                                {% endfor %}
+                                            </div>
+
+                                            <label for="edit-comment-{{ review.id }}"
+                                                   class="review-label">
+                                                Update Your Comment
+                                            </label>
+
+                                            <textarea id="edit-comment-{{ review.id }}"
+                                                      name="comment"
+                                                      rows="4"
+                                                      maxlength="2000"
+                                                      placeholder="Update your experience...">{{ review.comment or '' }}</textarea>
+
+                                            <button type="submit" class="submit-review-btn">
+                                                Save Changes
+                                            </button>
+                                        </form>
+                                    </details>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <div class="no-reviews">
+                            <h3>No Reviews Yet</h3>
+                            <p>Be the first customer to share your experience!</p>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <aside class="booking-card">
+
+            <span class="booking-label">PLAN YOUR EXPERIENCE</span>
+
+            <div class="booking-price">
+                <strong>₹{{ hb.price_per_night }}</strong>
+                <span>/ night</span>
+            </div>
+
+            <p class="booking-description">
+                Enjoy a memorable houseboat experience in the beautiful backwaters of Kerala.
+            </p>
+
+            <div class="booking-info">
+
+                <p>
+                    <span>Houseboat ID</span>
+                    <strong>#{{ hb.id }}</strong>
+                </p>
+
+                <p>
+                    <span>Maximum Guests</span>
+                    <strong>{{ hb.capacity }}</strong>
+                </p>
+
+                <p>
+                    <span>Bedrooms</span>
+                    <strong>{{ hb.bedrooms }}</strong>
+                </p>
+
+                <p>
+                    <span>Location</span>
+                    <strong>{{ hb.location }}</strong>
+                </p>
+
+                <p>
+                    <span>Food</span>
+                    <strong>{{ hb.food_available or "Not specified" }}</strong>
+                </p>
+
+            </div>
+
+            <a
+                href="https://wa.me/{{ whatsapp }}?text={{ ('Hello! I am interested in booking this houseboat.\n\nHouseboat ID: #' ~ hb.id ~ '\nHouseboat: ' ~ hb.name ~ '\nLocation: ' ~ hb.location ~ '\nPrice per night: Rs. ' ~ hb.price_per_night ~ '\nBedrooms: ' ~ hb.bedrooms ~ '\nMaximum guests: ' ~ hb.capacity ~ '\n\nPlease share the availability and booking details.') | urlencode }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="book-btn"
+            >
+                <span>Book via WhatsApp</span>
+                <span class="button-arrow">↗</span>
+            </a>
+
+            <p class="booking-note">
+                Contact us to check availability and confirm your booking.
+            </p>
+
+            <div class="contact-number">
+                WhatsApp Support
+                <strong>+91 75108 47452</strong>
+            </div>
+
+        </aside>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Houseboat Booking</title>
+    <link rel="stylesheet" href="/static/css/login.css">
+</head>
+<body>
+
+<img src="/static/images/login-bg.jpg" class="background-image" alt="Kerala Backwaters">
+
+<div class="background-overlay"></div>
+
+<div class="page-container">
+
+    <div class="welcome-section">
+        <a href="/" class="brand">Kerala Boats.</a>
+
+        <div class="welcome-content">
+            <!-- <span class="welcome-tag">EXPERIENCE KERALA</span> -->
+            <!-- <h1>Discover the Beauty of Kerala Backwaters</h1> -->
+            <!-- <p>
+                Your peaceful houseboat journey starts here.
+                Explore beautiful destinations and enjoy unforgettable
+                moments on Kerala's backwaters.
+            </p> -->
+        </div>
+
+        <p class="welcome-footer">
+            Experience the beauty. Enjoy the journey.
+        </p>
+    </div>
+
+    <div class="form-section">
+        <div class="form-card">
+
+            <a href="/" class="logo">Kerala Boats.</a>
+
+            <h2>Welcome Back!</h2>
+            <p class="form-description">Login to your account</p>
+
+            {% if request.query_params.get('registered') %}
+                <div class="alert success">
+                    Registration successful! Please login.
+                </div>
+            {% endif %}
+
+            {% if error %}
+                <div class="alert error">{{ error }}</div>
+            {% endif %}
+
+            <form method="post" action="/login">
+
+                <label>Email Address</label>
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    value="{{ email or '' }}"
+                    required
+                >
+
+                <label>Password</label>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit" class="btn">
+                    Login to Account
+                </button>
+
+            </form>
+
+            <p class="form-note">
+                New here? <a href="/register">Create an account</a>
+            </p>
+
+            <a href="/" class="back-link">← Back to Home</a>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

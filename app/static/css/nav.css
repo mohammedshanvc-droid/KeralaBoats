@@ -1,0 +1,215 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+.main-navbar {
+    width: 100%;
+    min-height: 82px;
+    padding: 0 6%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 35px;
+    border-bottom: 1px solid #e9eee8;
+    box-shadow: 0 3px 14px rgba(35, 75, 57, 0.04);
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    z-index: 100;
+}
+
+.brand-logo {
+    display: inline-flex;
+    align-items: baseline;
+    text-decoration: none;
+    white-space: nowrap;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 37px;
+    font-weight: bold;
+    letter-spacing: -1.8px;
+    line-height: 1;
+    transition: opacity 0.25s ease;
+}
+
+.brand-logo:hover {
+    opacity: 0.82;
+}
+
+.brand-kerala {
+    color: #315c45;
+}
+
+.brand-boats {
+    color: #171717;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+}
+
+.nav-menu a {
+    position: relative;
+    text-decoration: none;
+    color: #46574b;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 0;
+    transition: color 0.25s ease;
+}
+
+.nav-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 3px;
+    width: 0;
+    height: 2px;
+    background: #315c45;
+    border-radius: 5px;
+    transition: width 0.25s ease;
+}
+
+.nav-menu a:hover {
+    color: #315c45;
+}
+
+.nav-menu a:hover::after {
+    width: 100%;
+}
+
+.nav-menu a.active {
+    color: #315c45;
+}
+
+.nav-menu a.active::after {
+    width: 100%;
+}
+
+.nav-account {
+    display: flex;
+    align-items: center;
+    gap: 17px;
+}
+
+.user-greeting {
+    color: #315c45;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.nav-logout,
+.nav-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    height: 39px;
+    padding: 0 19px;
+    border-radius: 5px;
+    background: #315c45;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid #315c45;
+    transition: all 0.25s ease;
+}
+
+.nav-logout:hover,
+.nav-login:hover {
+    background: #203f30;
+    border-color: #203f30;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(35, 75, 57, 0.15);
+}
+
+@media (max-width: 900px) {
+    .main-navbar {
+        padding: 0 4%;
+        gap: 20px;
+    }
+
+    .brand-logo {
+        font-size: 32px;
+    }
+
+    .nav-menu {
+        gap: 20px;
+    }
+
+    .nav-menu a {
+        font-size: 13px;
+    }
+
+    .nav-account {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 650px) {
+    .main-navbar {
+        padding: 17px 5%;
+        flex-wrap: wrap;
+        row-gap: 17px;
+    }
+
+    .brand-logo {
+        font-size: 31px;
+    }
+
+    .nav-account {
+        margin-left: auto;
+    }
+
+    .nav-menu {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px 27px;
+        border-top: 1px solid #edf0eb;
+        padding-top: 12px;
+    }
+
+    .nav-menu a {
+        font-size: 13px;
+    }
+
+    .user-greeting {
+        font-size: 12px;
+    }
+
+    .nav-logout,
+    .nav-login {
+        min-width: 72px;
+        height: 35px;
+        padding: 0 13px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .brand-logo {
+        font-size: 27px;
+    }
+
+    .nav-menu {
+        gap: 10px 17px;
+    }
+
+    .nav-menu a {
+        font-size: 12px;
+    }
+
+    .user-greeting {
+        font-size: 11px;
+    }
+}

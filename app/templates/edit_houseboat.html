@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Houseboat | Kerala Boats</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+    <link rel="stylesheet" href="/static/css/edit_houseboat.css?v=1">
+</head>
+
+<body>
+
+    {% set user = request.session.get('user') %}
+
+    {% include "navbar.html" %}
+
+    <main class="page-container">
+
+        <a href="/admin/houseboats" class="back-link">← Back to Houseboats</a>
+
+        <section class="page-heading">
+            <span class="eyebrow">ADMINISTRATION</span>
+            <h1>Edit <span>Houseboat</span></h1>
+            <p>Update the houseboat information and add more photos.</p>
+        </section>
+
+        <div class="form-card">
+
+            <div class="form-header">
+                <h2>{{ houseboat.name }}</h2>
+                <p>Update the details below and save your changes.</p>
+            </div>
+
+            {% if error %}
+            <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            <form action="/admin/houseboats/{{ houseboat.id }}/edit" method="POST" enctype="multipart/form-data">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="name">Houseboat Name</label>
+                        <input type="text" id="name" name="name" value="{{ houseboat.name }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" value="{{ houseboat.location }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bedrooms">Number of Bedrooms</label>
+                        <input type="number" id="bedrooms" name="bedrooms" min="1" value="{{ houseboat.bedrooms }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="capacity">Guest Capacity</label>
+                        <input type="number" id="capacity" name="capacity" min="1" value="{{ houseboat.capacity }}" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="price_per_night">Price Per Night (₹)</label>
+                        <input type="number" id="price_per_night" name="price_per_night" min="1" step="0.01" value="{{ houseboat.price_per_night }}" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="facilities">Facilities</label>
+                        <textarea id="facilities" name="facilities" rows="3" required>{{ houseboat.facilities or '' }}</textarea>
+                        <small>Separate each facility with a comma.</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="5" required>{{ houseboat.description or '' }}</textarea>
+                    </div>
+
+                </div>
+
+                <div class="food-section">
+                    <div class="section-heading">
+                        <h3>Food & Dining</h3>
+                        <p>Update food services and dining options for this houseboat.</p>
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="food_available">Food Availability</label>
+                            <select id="food_available" name="food_available" required>
+                                <option value="Available" {% if houseboat.food_available == 'Available' %}selected{% endif %}>Available</option>
+                                <option value="Not Available" {% if houseboat.food_available == 'Not Available' %}selected{% endif %}>Not Available</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="meal_options">Meal Options</label>
+                            <input
+                                type="text"
+                                id="meal_options"
+                                name="meal_options"
+                                value="{{ houseboat.meal_options or '' }}"
+                                placeholder="Breakfast, Lunch, Dinner"
+                            >
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="food_menu">Food Menu</label>
+                            <textarea
+                                id="food_menu"
+                                name="food_menu"
+                                rows="4"
+                                placeholder="Enter available food items and menu details"
+                            >{{ houseboat.food_menu or '' }}</textarea>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="special_food">Special Food Options</label>
+                            <input
+                                type="text"
+                                id="special_food"
+                                name="special_food"
+                                value="{{ houseboat.special_food or '' }}"
+                                placeholder="Vegetarian, Non-Vegetarian, Seafood"
+                            >
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="current-photos">
+                    <h3>Current Photos</h3>
+
+                    {% if houseboat.images %}
+                    <div class="photo-grid">
+                        {% for image in houseboat.images %}
+                        <div class="photo-item">
+                            <img src="/static/uploads/{{ image.image_path }}" alt="{{ houseboat.name }}">
+                            {% if image.is_primary %}
+                            <span>Primary Photo</span>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="no-photos">No photos uploaded yet.</p>
+                    {% endif %}
+                </div>
+
+                <div class="form-group full-width upload-group">
+                    <label for="images">Add More Photos</label>
+                    <div class="upload-area">
+                        <input type="file" id="images" name="images" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" multiple>
+                        <p>Select additional houseboat photos</p>
+                        <small>Existing photos will be kept. Supported formats: JPG, JPEG, PNG and WEBP.</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/admin/houseboats" class="cancel-btn">Cancel</a>
+                    <button type="submit" class="submit-btn">Save Changes <span>→</span></button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    {% include "footer.html" %}
+
+</body>
+</html>

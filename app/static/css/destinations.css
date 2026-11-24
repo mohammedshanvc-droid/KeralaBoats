@@ -1,0 +1,478 @@
+
+:root {
+    --green: #315c45;
+    --dark-green: #244633;
+    --light-green: #edf3ed;
+    --cream: #f6f5ef;
+    --text: #26352c;
+    --muted: #78857c;
+    --white: #ffffff;
+    --border: #e5e9e3;
+    --shadow: 0 10px 30px rgba(30, 55, 37, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+}
+
+/* HERO */
+
+.page-hero {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+    background:
+        linear-gradient(rgba(20, 45, 31, 0.65), rgba(20, 45, 31, 0.72)),
+        url("https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1600&q=85");
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    max-width: 750px;
+}
+
+.page-hero span {
+    color: #d7e8d8;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.page-hero h1 {
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 48px);
+    margin: 15px 0;
+}
+
+.page-hero p {
+    color: #f0f4ef;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* DESTINATION SECTION */
+
+.destination-section {
+    max-width: 1550px;
+    margin: auto;
+    padding: 65px 4% 80px;
+}
+
+/* SECTION HEADING */
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.eyebrow {
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.heading-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 35px;
+    margin: 9px 0;
+}
+
+.heading-content p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* ACTION BUTTONS */
+
+.heading-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.add-destination-btn,
+.dashboard-btn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 11px 17px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.add-destination-btn {
+    background: var(--green);
+    color: white;
+}
+
+.dashboard-btn {
+    background: var(--light-green);
+    color: var(--green);
+    border: 1px solid #dce7dc;
+}
+
+.add-destination-btn:hover {
+    background: var(--dark-green);
+    transform: translateY(-2px);
+}
+
+.dashboard-btn:hover {
+    background: #dfeade;
+}
+
+/* FLEXBOX SLIDER */
+
+.destination-slider {
+    width: 100%;
+    margin: 35px auto 0;
+}
+
+.destination-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 28px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 5px 5px 20px;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--green) #e8ece7;
+}
+
+.destination-grid::-webkit-scrollbar {
+    height: 6px;
+}
+
+.destination-grid::-webkit-scrollbar-track {
+    background: #e8ece7;
+    border-radius: 10px;
+}
+
+.destination-grid::-webkit-scrollbar-thumb {
+    background: var(--green);
+    border-radius: 10px;
+}
+
+/* DESTINATION CARD */
+
+.destination-card {
+    flex: 0 0 calc((100% - 56px) / 3);
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    scroll-snap-align: start;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.destination-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 32px rgba(30, 55, 37, 0.12);
+}
+
+/* IMAGE */
+
+.destination-image {
+    position: relative;
+    width: 100%;
+    height: 205px;
+    overflow: hidden;
+    background: #edf1eb;
+}
+
+.destination-image::before {
+    content: attr(data-number);
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(35, 65, 48, 0.92);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 2;
+}
+
+.destination-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+}
+
+.destination-card:hover .destination-image img {
+    transform: scale(1.04);
+}
+
+.no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--muted);
+    background: var(--light-green);
+    font-size: 14px;
+}
+
+/* CARD CONTENT */
+
+.destination-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 23px 22px;
+}
+
+.destination-label {
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+}
+
+.destination-info h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text);
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.location {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.description {
+    color: #78857c;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* EXPLORE BUTTON */
+
+.destination-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    color: var(--green);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.destination-btn span {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.destination-btn:hover {
+    color: var(--dark-green);
+}
+
+.destination-btn:hover span {
+    transform: translateX(5px);
+}
+
+/* CARD NAVIGATION */
+
+.card-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+
+.card-nav-btn {
+    color: var(--green);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.card-nav-btn:hover {
+    color: var(--dark-green);
+}
+
+/* SLIDER FOOTER */
+
+.slider-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+    padding-right: 5px;
+}
+
+.slider-hint {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.slider-arrow {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--green);
+    border-radius: 50%;
+    color: var(--green);
+    font-size: 24px;
+}
+
+/* EMPTY MESSAGE */
+
+.empty-message {
+    text-align: center;
+    background: white;
+    padding: 55px 20px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.empty-message h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.empty-message p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+    .destination-card {
+        flex: 0 0 calc((100% - 28px) / 2);
+    }
+
+    .destination-image {
+        height: 210px;
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+    .page-hero {
+        min-height: 250px;
+        padding: 45px 18px;
+    }
+
+    .page-hero h1 {
+        font-size: 32px;
+    }
+
+    .page-hero p {
+        font-size: 13px;
+    }
+
+    .destination-section {
+        padding: 40px 16px 55px;
+    }
+
+    .section-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .heading-content h2 {
+        font-size: 29px;
+    }
+
+    .heading-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .heading-actions a {
+        text-align: center;
+    }
+
+    .destination-grid {
+        gap: 18px;
+    }
+
+    .destination-card {
+        flex: 0 0 85%;
+        min-width: 260px;
+    }
+
+    .destination-image {
+        height: 190px;
+    }
+
+    .destination-info {
+        padding: 19px;
+    }
+
+    .destination-info h3 {
+        font-size: 23px;
+    }
+
+    .description {
+        font-size: 13px;
+    }
+
+    .slider-footer {
+        margin-top: 10px;
+    }
+}

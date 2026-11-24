@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Houseboats | KeralaBoats</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin_houseboats.css') }}?v=3">
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    {% include "navbar.html" %}
+
+    <main class="page-container">
+
+        <section class="page-hero">
+            <div class="hero-content">
+                <span class="eyebrow">DISCOVER GOD'S OWN COUNTRY</span>
+                <h1>Manage <span>Houseboats</span></h1>
+                <p>View, edit and manage all your houseboat listings.</p>
+            </div>
+        </section>
+
+        {% if request.query_params.get('error') == 'has_bookings' %}
+        <div class="message error-message">
+            This houseboat has existing bookings and cannot be deleted.
+        </div>
+        {% elif request.query_params.get('error') == 'delete_failed' %}
+        <div class="message error-message">
+            Unable to delete this houseboat. Please try again.
+        </div>
+        {% endif %}
+
+        <section class="houseboat-section">
+
+            <div class="section-heading">
+                <div class="heading-content">
+                    <span class="section-eyebrow">PROPERTY MANAGEMENT</span>
+                    <h2>Houseboat Listings</h2>
+                    <p>Manage your available houseboats and listing details.</p>
+                </div>
+
+                <div class="heading-actions">
+                    <span class="listing-count">
+                        {{ houseboats|length }} houseboat(s)
+                    </span>
+
+                    <a href="/admin/add-houseboat" class="add-btn">
+                        + Add Houseboat
+                    </a>
+                        <a href="/admin/dashboard" class="dashboard-btn">
+                        ← Back to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            {% if houseboats %}
+
+            <div class="houseboat-grid">
+
+                {% for hb in houseboats %}
+
+                <article class="houseboat-card">
+
+                    <div class="houseboat-image">
+
+                        {% if hb.images and hb.images|length > 0 %}
+                        <img
+                            src="/static/uploads/{{ hb.images[0].image_path }}"
+                            alt="{{ hb.name }}"
+                        >
+                        {% else %}
+                        <div class="no-image">
+                            No Image Available
+                        </div>
+                        {% endif %}
+
+                        <span class="status {% if hb.is_active %}available{% else %}inactive{% endif %}">
+                            {% if hb.is_active %}
+                                Active
+                            {% else %}
+                                Inactive
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+                    <div class="card-content">
+
+                        <div class="card-location">
+                            {{ hb.location }}
+                        </div>
+
+                        <h3>{{ hb.name }}</h3>
+
+                        <div class="houseboat-info">
+                            <span>{{ hb.bedrooms }} Bedrooms</span>
+                            <span>{{ hb.capacity }} Guests</span>
+                        </div>
+
+                        <div class="price">
+                            ₹{{ "{:,.2f}".format(hb.price_per_night|float) }}
+                            <small>/ night</small>
+                        </div>
+
+                        <div class="card-actions">
+
+                            <a href="/admin/houseboats/{{ hb.id }}" class="view-btn">
+                                View
+                            </a>
+
+                            <a href="/admin/houseboats/{{ hb.id }}/edit" class="edit-btn">
+                                Edit
+                            </a>
+
+                            <form
+                                action="/admin/houseboats/{{ hb.id }}/delete"
+                                method="POST"
+                                onsubmit="return confirm('Delete this houseboat and all its photos? This cannot be undone.');"
+                            >
+                                <button type="submit" class="delete-btn">
+                                    Delete
+                                </button>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-state">
+                <div class="empty-icon">⌂</div>
+                <h2>No Houseboats Added Yet</h2>
+                <p>Start by adding your first houseboat listing.</p>
+
+                <a href="/admin/add-houseboat" class="add-btn">
+                    + Add Your First Houseboat
+                </a>
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+    {% include "footer.html" %}
+
+</body>
+</html>

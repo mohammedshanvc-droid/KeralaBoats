@@ -1,0 +1,245 @@
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f8faf6;
+    color: #20382e;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+}
+
+/* Dashboard */
+
+.dashboard-page {
+    max-width: 1200px;
+    width: 92%;
+    margin: 45px auto 70px;
+}
+
+/* Welcome Banner */
+
+.welcome-section {
+    position: relative;
+    width: 100%;
+    min-height: 370px;
+    display: flex;
+    align-items: center;
+    padding: 55px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 50px;
+    background: #315c45;
+    box-shadow: 0 12px 30px rgba(35, 75, 57, 0.12);
+}
+
+.welcome-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s ease;
+}
+
+.welcome-section:hover .welcome-image {
+    transform: scale(1.025);
+}
+
+.welcome-section::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        rgba(15, 45, 30, 0.88),
+        rgba(20, 55, 37, 0.55),
+        rgba(20, 55, 37, 0.12)
+    );
+}
+
+.welcome-overlay {
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+}
+
+.welcome-label {
+    color: #c8e6ce;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.welcome-section h1 {
+    font-family: 'Playfair Display', serif;
+    color: #ffffff;
+    font-size: clamp(34px, 4vw, 52px);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 18px;
+}
+
+.welcome-section p:not(.welcome-label) {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+    line-height: 1.9;
+    max-width: 550px;
+}
+
+/* Dashboard Explore Sections */
+
+.dashboard-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    padding: 30px;
+    margin-bottom: 25px;
+    background: #ffffff;
+    border: 1px solid #e5ece4;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(35, 75, 57, 0.035);
+    transition: all 0.3s ease;
+}
+
+.dashboard-heading:hover {
+    border-color: #cbdcca;
+    box-shadow: 0 9px 24px rgba(35, 75, 57, 0.07);
+    transform: translateY(-2px);
+}
+
+.dashboard-heading h2 {
+    font-family: 'Playfair Display', serif;
+    color: #234b39;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 9px;
+}
+
+.dashboard-heading p {
+    color: #718176;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.explore-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #315c45;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 14px 24px;
+    border: 1px solid #315c45;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.explore-btn:hover {
+    background: #234b39;
+    border-color: #234b39;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(49, 92, 69, 0.17);
+}
+
+.explore-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+
+@media (max-width: 900px) {
+    .dashboard-page {
+        width: 94%;
+    }
+
+    .welcome-section {
+        padding: 40px;
+        min-height: 330px;
+    }
+
+    .dashboard-heading {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 650px) {
+    .dashboard-page {
+        width: 92%;
+        margin: 25px auto 45px;
+    }
+
+    .welcome-section {
+        min-height: 290px;
+        padding: 28px 23px;
+        margin-bottom: 35px;
+        border-radius: 11px;
+    }
+
+    .welcome-section h1 {
+        font-size: 30px;
+    }
+
+    .welcome-section p:not(.welcome-label) {
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    .welcome-label {
+        font-size: 10px;
+        letter-spacing: 2px;
+        margin-bottom: 15px;
+    }
+
+    .dashboard-heading {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 23px;
+        margin-bottom: 18px;
+    }
+
+    .dashboard-heading h2 {
+        font-size: 23px;
+    }
+
+    .dashboard-heading p {
+        font-size: 13px;
+    }
+
+    .explore-btn {
+        width: 100%;
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+@media (max-width: 380px) {
+    .welcome-section {
+        min-height: 270px;
+        padding: 23px 18px;
+    }
+
+    .welcome-section h1 {
+        font-size: 26px;
+    }
+
+    .dashboard-heading {
+        padding: 19px;
+    }
+
+    .dashboard-heading h2 {
+        font-size: 21px;
+    }
+}

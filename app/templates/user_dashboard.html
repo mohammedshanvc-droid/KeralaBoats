@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | KeralaBoats</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/nav.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/user_dashboard.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+{% set user = request.session.get('user') %}
+
+{% include "navbar.html" %}
+
+<main class="dashboard-page">
+
+    <section class="welcome-section">
+
+        <img
+            src="{{ url_for('static', path='images/login-bg.jpg') }}"
+            alt="Kerala backwaters and houseboat"
+            class="welcome-image"
+        >
+
+        <div class="welcome-overlay">
+
+            <p class="welcome-label"></p>
+
+            <h1>Welcome back, {{ user.name }}!</h1>
+
+            <p>
+                Discover beautiful destinations and explore comfortable
+                houseboats across Kerala.
+            </p>
+
+        </div>
+
+    </section>
+
+    <section class="dashboard-heading">
+
+        <div>
+            <h2>Explore Houseboats</h2>
+            <p>Find your perfect houseboat for your next journey.</p>
+        </div>
+
+        <a href="/houseboats" class="explore-btn">
+            Explore Houseboats →
+        </a>
+
+    </section>
+
+    <section class="dashboard-heading destination-heading">
+
+        <div>
+            <h2>Explore Destinations</h2>
+            <p>
+                Discover beautiful backwater destinations
+                and amazing places in Kerala.
+            </p>
+        </div>
+
+        <a href="/destinations" class="explore-btn">
+            Explore Destinations →
+        </a>
+
+    </section>
+
+</main>
+
+{% include "footer.html" %}
+
+</body>
+</html>

@@ -1,0 +1,451 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>KeralaBoats | Explore Kerala</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', path='css/home.css') }}?v=5"><link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+{% set user = request.session.get('user') %}
+
+<!-- Navbar -->
+<header class="navbar">
+    <div class="nav-container">
+
+        <a href="/" class="logo">
+            Kerala<span>Boats.</span>
+        </a>
+
+        <nav class="nav-links">
+            
+            <a href="/#houseboats">Houseboats</a>
+            <a href="/#destinations">Destinations</a>
+            <a href="#how-it-works">How It Works</a>
+        </nav>
+
+        <div class="nav-actions">
+            {% if user %}
+                <span class="welcome-text">
+                    Hello, {{ user.name }}
+                </span>
+
+                {% if user.role == 'admin' %}
+                    <a href="/admin" class="login-btn">Dashboard</a>
+                {% endif %}
+
+                <a href="/logout" class="register-btn">Logout</a>
+            {% else %}
+                <a href="/login" class="login-btn">Login</a>
+                <a href="/register" class="register-btn">Sign Up</a>
+            {% endif %}
+        </div>
+
+    </div>
+</header>
+
+
+<main>
+
+    <!-- Hero Section -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            
+
+            <h1>
+               
+            </h1>
+
+            <p>
+                Discover peaceful backwaters, beautiful destinations
+                and unforgettable houseboat experiences.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="/houseboats" class="primary-btn">
+                    Explore Houseboats <span>→</span>
+                </a>
+
+                <a href="/destinations" class="secondary-btn">
+                    Explore Destinations
+                </a>
+            </div>
+
+        </div>
+
+        <div class="hero-bottom">
+            <span>Discover</span>
+            <span class="hero-line"></span>
+            <span>Relax</span>
+            <span class="hero-line"></span>
+            <span>Experience Kerala</span>
+        </div>
+
+    </section>
+
+
+    <!-- Houseboats Section -->
+    <section class="houseboats-section" id="houseboats">
+
+        <div class="section-heading">
+            <span class="section-tag">OUR COLLECTION</span>
+            <h2>Explore Our Houseboats</h2>
+            <p>
+                Find the perfect houseboat for your next Kerala backwater experience.
+            </p>
+        </div>
+
+        <div class="houseboat-grid">
+
+            {% for hb in featured|default([]) %}
+
+            <div class="houseboat-card">
+
+                <div class="houseboat-image">
+
+                    {% if hb.images %}
+                        <img
+                            src="{{ url_for('static', path='uploads/' ~ hb.images[0].image_path) }}"
+                            alt="{{ hb.name }}"
+                        >
+                    {% else %}
+                        <div class="no-image">
+                            Houseboat
+                        </div>
+                    {% endif %}
+
+                    <span class="image-label">KERALA HOUSEBOAT</span>
+
+                </div>
+
+                <div class="houseboat-details">
+
+                    <span class="houseboat-location">
+                        {{ hb.location }}
+                    </span>
+
+                    <h3>{{ hb.name }}</h3>
+
+                    <p>
+                        {{ hb.description or 'Enjoy a relaxing journey through Kerala’s beautiful backwaters.' }}
+                    </p>
+
+                    <div class="houseboat-features">
+                        <span>Bedrooms: {{ hb.bedrooms }}</span>
+                        <span>Guests: {{ hb.capacity }}</span>
+                    </div>
+
+                    <div class="houseboat-bottom">
+
+                        <div class="price">
+                            <strong>₹{{ hb.price_per_night }}</strong>
+                            <span>/ night</span>
+                        </div>
+
+                        <a href="/houseboats/{{ hb.id }}" class="card-btn">
+                            View Details →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-houseboats">
+                <h3>No houseboats available yet</h3>
+                <p>Please check back soon for available houseboats.</p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        <div class="center-btn">
+            <a href="/houseboats" class="outline-btn">
+                View All Houseboats →
+            </a>
+        </div>
+
+    </section>
+
+
+    <!-- Destinations Section -->
+    <section class="destinations-section" id="destinations">
+
+        <div class="section-heading">
+            <span class="section-tag">EXPLORE KERALA</span>
+            <h2>Beautiful Destinations</h2>
+            <p>
+                Explore the most beautiful backwater destinations in Kerala.
+            </p>
+        </div>
+
+        <!-- CSS radio controls -->
+        <input type="radio" name="destination-page"
+               id="destination-page-1" checked>
+
+        <input type="radio" name="destination-page"
+               id="destination-page-2">
+
+        <div class="destination-slider">
+
+            <!-- First 3 destinations -->
+            <div class="destination-page destination-page-one">
+
+                <div class="destination-grid">
+
+                    <div class="destination-card">
+                        <div class="destination-image">
+                            <img src="/static/images/alleppey.jpg" alt="Alleppey">
+                            <span class="destination-number">01</span>
+                        </div>
+
+                        <div class="destination-info">
+                            <span class="destination-label">THE BACKWATER PARADISE</span>
+                            <h3>Alleppey</h3>
+                            <p>
+                                Experience the famous backwaters and
+                                traditional houseboat journeys.
+                            </p>
+                            <a href="/houseboats?location=Alleppey">
+                                Explore Houseboats <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="destination-card">
+                        <div class="destination-image">
+                            <img src="/static/images/kumarakom.jpg" alt="Kumarakom">
+                            <span class="destination-number">02</span>
+                        </div>
+
+                        <div class="destination-info">
+                            <span class="destination-label">NATURE & TRANQUILITY</span>
+                            <h3>Kumarakom</h3>
+                            <p>
+                                Enjoy peaceful lakes, green landscapes
+                                and beautiful village life.
+                            </p>
+                            <a href="/houseboats?location=Kumarakom">
+                                Explore Houseboats <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="destination-card">
+                        <div class="destination-image">
+                            <img src="/static/images/kollam.jpg" alt="Kollam">
+                            <span class="destination-number">03</span>
+                        </div>
+
+                        <div class="destination-info">
+                            <span class="destination-label">SCENIC BACKWATERS</span>
+                            <h3>Kollam</h3>
+                            <p>
+                                Discover the scenic beauty and
+                                peaceful waters of Kollam.
+                            </p>
+                            <a href="/houseboats?location=Kollam">
+                                Explore Houseboats <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="destination-navigation">
+                    <span class="page-number">01 <small>/ 02</small></span>
+
+                    <label for="destination-page-2"
+                           class="destination-arrow"
+                           aria-label="Next destinations">
+                        →
+                    </label>
+                </div>
+
+            </div>
+
+
+            <!-- Next 3 destinations -->
+            <div class="destination-page destination-page-two">
+
+                <div class="destination-grid">
+
+                    <div class="destination-card">
+                        <div class="destination-image">
+                            <img src="/static/images/kochi.jpg" alt="Kochi">
+                            <span class="destination-number">04</span>
+                        </div>
+
+                        <div class="destination-info">
+                            <span class="destination-label">COASTAL CHARM</span>
+                            <h3>Kochi</h3>
+                            <p>
+                                Experience the coastal beauty and
+                                cultural attractions of Kochi.
+                            </p>
+                            <a href="/houseboats?location=Kochi">
+                                Explore Houseboats <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="destination-card">
+                        <div class="destination-image">
+                            <img src="/static/images/Ashtamudi.jpg" alt="Ashtamudi">
+                            <span class="destination-number">05</span>
+                        </div>
+
+                        <div class="destination-info">
+                            <span class="destination-label">LAKE EXPERIENCE</span>
+                            <h3>Ashtamudi</h3>
+                            <p>
+                                Relax and explore the beautiful
+                                Ashtamudi Lake.
+                            </p>
+                            <a href="/houseboats?location=Ashtamudi">
+                                Explore Houseboats <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+
+
+                    <div class="destination-card">
+                        <div class="destination-image">
+                            <img src="/static/images/kuttanad.jpg" alt="Kuttanad">
+                            <span class="destination-number">06</span>
+                        </div>
+
+                        <div class="destination-info">
+                            <span class="destination-label">THE RICE BOWL OF KERALA</span>
+                            <h3>Kuttanad</h3>
+                            <p>
+                                Discover beautiful canals, green fields
+                                and traditional villages.
+                            </p>
+                            <a href="/houseboats?location=Kuttanad">
+                                Explore Houseboats <span>→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="destination-navigation">
+
+                    <label for="destination-page-1"
+                           class="destination-arrow"
+                           aria-label="Previous destinations">
+                        ←
+                    </label>
+
+                    <span class="page-number">02 <small>/ 02</small></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="destination-more">
+            <p>Looking for more beautiful places in Kerala?</p>
+
+            <a href="/destinations" class="outline-btn">
+                Explore More Destinations <span>↗</span>
+            </a>
+        </div>
+
+    </section>
+
+
+    <!-- How It Works -->
+    <section class="how-section" id="how-it-works">
+
+        <div class="section-heading">
+            <span class="section-tag">SIMPLE & EASY</span>
+            <h2>How It Works</h2>
+            <p>
+                Your Kerala houseboat experience is just three steps away.
+            </p>
+        </div>
+
+        <div class="steps-grid">
+
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <div class="step-icon">⌕</div>
+                <h3>Explore</h3>
+                <p>
+                    Browse our collection of houseboats and
+                    discover your favourite destination.
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <div class="step-icon">▣</div>
+                <h3>Choose</h3>
+                <p>
+                    Select a houseboat that matches your
+                    travel plans and requirements.
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <div class="step-icon">⌁</div>
+                <h3>Book</h3>
+                <p>
+                    Contact us through WhatsApp and confirm
+                    your memorable houseboat experience.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+
+        <div class="cta-content">
+            <span>YOUR KERALA JOURNEY STARTS HERE</span>
+
+            <h2>
+                Ready for an Unforgettable<br>
+                Backwater Experience?
+            </h2>
+
+            <p>
+                Find your perfect houseboat and enjoy
+                the beauty of Kerala.
+            </p>
+
+            <a href="/houseboats" class="cta-button">
+                Find Your Houseboat →
+            </a>
+        </div>
+
+    </section>
+
+</main>
+{% include "footer.html" %}
+</body>
+</html>
