@@ -12,3 +12,8 @@ __pycache__/
 .pytest_cache/
 .DS_Store
 Thumbs.db
+# Private database backups and migration files
+keralaboats_backup.sql
+keralaboats_data.sql
+keralaboats_schema.sql
+import_keralaboats_data.py
